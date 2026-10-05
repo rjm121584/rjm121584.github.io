@@ -182,3 +182,5 @@ img=Image.alpha_composite(img,vig)
 OUT.parent.mkdir(parents=True,exist_ok=True)
 img.convert("RGB").save(OUT,"PNG",optimize=True)
 print(OUT, OUT.stat().st_size)
+
+# trigger store asset build
