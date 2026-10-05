@@ -1,0 +1,34 @@
+name: Build Velvet Store Assets
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'generate_store_assets.py'
+      - 'assets/current_velvet_logo.webp.b64'
+      - 'assets/current_velvet_icon.webp.b64'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow
+        run: python -m pip install pillow
+      - name: Build feature graphic
+        run: python generate_store_assets.py
+      - name: Commit generated graphic
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/Velvet-Solitaire-Feature-Graphic-1024x500.png
+          git diff --cached --quiet || git commit -m "Build current Velvet feature graphic"
+          git push
